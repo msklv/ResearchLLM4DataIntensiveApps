@@ -15,7 +15,7 @@ brew upgrade python
 python3 --version
 ```
 
-Часто в системе есть несколлко версий Python,
+Часто в системе есть несколько версий Python,
 выводим их:
 ```bash
 ls -l /opt/homebrew/bin/python*

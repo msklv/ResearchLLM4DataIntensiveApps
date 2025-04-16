@@ -5,6 +5,7 @@
 - Docker и Docker Compose
 - Jupyter Lab и Jupyter Notebook
 - Ollama
+- VS Code + continue.dev
 
 
 ## Краткое описание элементов 
@@ -36,8 +37,10 @@ brew install ollama/tap/ollama
 ```
 - Запуск Ollama:
 ```bash
-export OLLAMA_TIMEOUT=600s  # Увеличиваем таймаут API до 10 минут
-export OLLAMA_DEBUG=true    # Включаем режим отладки
+export OLLAMA_TIMEOUT=600s      # Увеличиваем таймаут API до 10 минут
+export OLLAMA_LOAD_TIMEOUT=10m  # Увеличиваем таймаут загрузки модели до 10 минут
+export OLLAMA_LOG_LEVEL=debug   # Устанавливаем уровень логирования на debug, если необходимо.
+export OLLAMA_DEBUG=true        # Включаем режим отладки
 ollama pull mxbai-embed-large
 ollama run gemma3:12b-it-q4_K_M
 ollama serve
