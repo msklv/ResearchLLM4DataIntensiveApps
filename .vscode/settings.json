@@ -2,6 +2,7 @@
     "continue.enableQuickActions": true,
     "cSpell.words": [
         "dotenv",
+        "llms",
         "mxbai",
         "qwen",
         "venv",
