@@ -1,4 +1,4 @@
-name: project-configuration
+name: configurationForRAGAssistant
 version: 0.0.1
 schema: v1
 # https://docs.continue.dev/yaml-migration
@@ -14,7 +14,21 @@ models:
     model: qwen2.5-coder:7b-instruct-q6_K
     defaultCompletionOptions:
       temperature: 0.7
-  
+
+  - name: gemma3:12b
+    provider: ollama
+    model: gemma3:12b-it-q4_K_M
+
+  - name: nebius - Qwen2.5-Coder-32B
+    provider: nebius
+    model: Qwen/Qwen2.5-Coder-32B-Instruct
+    apiKey: ${NEBIUS_API_KEY}
+    roles:
+      - autocomplete
+      - chat
+      - edit
+      - apply
+
   - name: qwen2.5-coder autocomplete
     provider: ollama
     model: qwen2.5-coder:7b-instruct-q6_K
@@ -23,12 +37,14 @@ models:
 
 context:
   - provider: file
+  - provider: currentFile
   - provider: code
   - provider: codebase
     params:
       nRetrieve: 30
       nFinal: 10
   - provider: docs
+  - provider: search
   - provider: diff
   - provider: folder
   - provider: terminal
@@ -39,10 +55,6 @@ rules:
 
 prompts:
   - name: code_review
-    description: Проведи ревью кода
-    prompt: |
-      Проведи подробное ревью следующего кода...
-  - name: check
     description: Check for mistakes in my code
     prompt: |
       Please read the highlighted code and check for any mistakes. You should look for the following, and be extremely vigilant:
@@ -51,3 +63,4 @@ prompts:
         - Security vulnerabilities
         - Performance issues
         - Anything else that looks wrong
+      Ответ нужен на русском языке.  
