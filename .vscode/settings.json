@@ -1,6 +1,7 @@
 {
     "continue.enableQuickActions": true,
     "cSpell.words": [
+        "appsettings",
         "dotenv",
         "llms",
         "mxbai",
