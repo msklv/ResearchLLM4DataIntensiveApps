@@ -5,12 +5,12 @@ namespace PAssistant.Settings
 {
     public class AppSettings
     {
-        public OllamaSettings Ollama { get; set; }
-        public JiraSettings Jira { get; set; }
+        public required OllamaSettings Ollama { get; set; }
+        public required JiraSettings Jira { get; set; }
 
         private static AppSettings _current;
 
-        public static AppSettings Current => _current ??= Load();
+        public static AppSettings Current => _current ??= Load(); // Ленивая инициализация
 
         private static AppSettings Load(string configFile = "appsettings.json")
         {
@@ -18,7 +18,11 @@ namespace PAssistant.Settings
                 .AddJsonFile(configFile)
                 .Build();
 
-            var settings = new AppSettings();
+            var settings = new AppSettings
+            {
+                Ollama = new OllamaSettings(),
+                Jira = new JiraSettings()
+            };
             configuration.Bind(settings);
 
             return settings;

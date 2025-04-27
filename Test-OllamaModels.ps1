@@ -139,7 +139,8 @@ function ScenarioCodeGeneration  {
 
 # Проверка + прогрев сценария P Assistant
 function ScenarioPAssistant {
-    $llmModel = "phi4:14b-q4_K_M"
+    #$llmModel = "phi4:14b-q4_K_M"
+    $llmModel = "qwen2.5-coder:7b-instruct-q6_K"
 
     CheckServerConnection -serverUrl $serverUrl > $null
 
