@@ -1,5 +1,6 @@
 ﻿#pragma warning disable SKEXP0070 // SKEXP0070: The assembly 'Microsoft.SemanticKernel' is referenced by the project but not used in the code
 
+// https://github.com/microsoft/semantic-kernel/blob/main/dotnet/samples/Demos/OllamaFunctionCalling/Program.cs - Пример использования функции вызова Ollama
 
 using Microsoft.SemanticKernel;
 using PAssistant.Settings;
