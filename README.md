@@ -30,7 +30,7 @@
 
 ![Архитектура RAG](Advanced-RAG.png)
 
-Источник - https://d3lkc3n5th01x7.cloudfront.net/wp-content/uploads/2024/08/26051537/Advanced-RAG.png
+Источник - <https://d3lkc3n5th01x7.cloudfront.net/wp-content/uploads/2024/08/26051537/Advanced-RAG.png>
 
 ## Архитектура Агентов
 

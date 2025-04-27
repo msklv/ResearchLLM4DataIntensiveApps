@@ -29,6 +29,9 @@ function WarmupLLMModel {
     param (
         [string]$llmModel
     )
+
+    # Время старта прогрева
+    $startTime = Get-Date
     
     $llmPrompt = "Объясни кратко, как работает Retrieval-Augmented Generation (RAG)."
     $llmPayload = @{
@@ -37,11 +40,16 @@ function WarmupLLMModel {
         stream = $false
     } | ConvertTo-Json -Depth 3
     
-    Write-Host "`Запрос к LLM модели '$llmModel'..." -ForegroundColor Cyan
+    Write-Host "`Запрос к LLM модели '$llmModel'..."
     try {
         $llmResponse = Invoke-RestMethod -Uri "$serverUrl/api/generate" -Method Post -Body $llmPayload -ContentType "application/json"
         Write-Host "📢 Ответ от LLM:" -ForegroundColor Green
         Write-Host $llmResponse.response
+        $endTime = Get-Date
+        $duration = $endTime - $startTime
+        Write-Host "⏱️ Время прогрева: $($duration.TotalSeconds) секунд" -ForegroundColor Green
+        Write-Host "✅ LLM модель '$llmModel' успешно прогрета!" -ForegroundColor Green
+
     } catch {
         Write-Host "❌ Ошибка при запросе к LLM модели" -ForegroundColor Red
         Write-Host $_.Exception.Message
@@ -68,9 +76,9 @@ function CheckModelAvailability {
         Write-Host $response.modified_at -ForegroundColor DarkGray
         write-host $response.details -ForegroundColor DarkGray
         if ($response.details) {
-            Write-Host "✅ Модель '$model' доступна!" -ForegroundColor Green
+            Write-Host "✅ Модель '$model' найдена локально!" -ForegroundColor Green
         } else {
-            Write-Host "❌ Модель '$model' недоступна." -ForegroundColor Red
+            Write-Host "❌ Модель '$model' не найдена локально." -ForegroundColor Red
         }
     } catch {
         Write-Host "❌ Ошибка при проверке доступности модели '$model'" -ForegroundColor Red
@@ -129,6 +137,16 @@ function ScenarioCodeGeneration  {
     WarmupLLMModel -llmModel $llmModel > $null
 }
 
+# Проверка + прогрев сценария P Assistant
+function ScenarioPAssistant {
+    $llmModel = "phi4:14b-q4_K_M"
+
+    CheckServerConnection -serverUrl $serverUrl > $null
+
+    CheckModelAvailability -model $llmModel > $null
+    WarmupLLMModel -llmModel $llmModel > $null
+}
+
 
 
 # ________________ Маршрутизатор сценариев  _________________________
@@ -141,12 +159,13 @@ $menu = @"
 ----------------------------------------
 [1] Сценарий RAG
 [2] Сценарий Code Generation
+[3] Сценарий P Assistant
 ----------------------------------------
 "@
 
 Write-Host $menu
 
-$validChoices = @("1", "2")
+$validChoices = @("1", "2", "3")
 $scenarioChoice = ""
 $attempts = 0
 $maxAttempts = 5
@@ -167,4 +186,6 @@ if ($attempts -eq $maxAttempts) {
 switch ($scenarioChoice) {
     "1" { ScenarioRAG }
     "2" { ScenarioCodeGeneration }
+    "3" { ScenarioPAssistant }
+    default { Write-Host "Неверный выбор сценария." -ForegroundColor Red }
 }
