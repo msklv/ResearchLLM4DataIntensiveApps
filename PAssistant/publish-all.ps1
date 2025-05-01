@@ -2,6 +2,24 @@
 $configuration = "Release"
 $outputBase = "./publish"
 
+
+# Проверка рабочей директории
+$currentDir = Get-Location
+if ($currentDir -ne $PSScriptRoot) {
+   # Меняем рабочий каталог на каталог скрипта
+   Set-Location $PSScriptRoot
+   Write-Host "Рабочий каталог изменен на $PSScriptRoot"
+}
+
+# Очистка старой папки
+if (Test-Path $outputBase -PathType Container) {
+    Remove-Item $outputBase -Recurse -Force
+    Write-Host "Удалена старая папка $outputBase"
+}
+New-Item -ItemType Directory -Path $outputBase | Out-Null
+
+
+
 # Платформы для сборки
 $runtimes = @(
     "win-x64",
