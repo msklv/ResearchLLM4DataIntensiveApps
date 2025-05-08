@@ -89,8 +89,15 @@ public static class StartupValidator
                 response.EnsureSuccessStatusCode();
                 success = true;
             }
+            catch (HttpRequestException ex)
+            {
+                // Обработка исключения, если сервер недоступен или произошла ошибка сети
+                Console.WriteLine($"Ошибка проверки Jira эндпоинта '{jira.Url}");
+                Console.WriteLine($"Ошибка запроса: {ex.Message}");
+            }
             catch (Exception ex)
             {
+                // Обработка других исключений
                 Console.WriteLine($"Ошибка проверки Jira эндпоинта '{jira.Url}': {ex.Message}");
             }
 

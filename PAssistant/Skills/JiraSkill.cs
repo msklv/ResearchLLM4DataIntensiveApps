@@ -9,6 +9,7 @@ namespace PAssistant.Skills
     public class JiraSkill
     {
         private readonly JiraSettings _settings;
+        //private readonly GeneralSettings _generalSettings;
         private readonly HttpClient _httpClient;
 
         public JiraSkill(JiraSettings settings)
@@ -21,14 +22,25 @@ namespace PAssistant.Skills
         [KernelFunction("GetMyIssues")]
         public async Task<string> GetMyIssuesAsync(string assignee)
         {
-            // Отправляет HTTP GET запрос для получения задач, назначенных указанному исполнителю из Jira
-            var response = await _httpClient.GetAsync($"{_settings.Url}/rest/api/2/search?jql=assignee={assignee}");
-
-            // Проверяет успешность запроса
-            response.EnsureSuccessStatusCode();
-
-            // Читает содержимое ответа в виде строки JSON
-            var json = await response.Content.ReadAsStringAsync();
+            string json = string.Empty;
+            try
+            {
+                // Отправляет HTTP GET запрос для получения задач, назначенных указанному исполнителю из Jira
+                var response = await _httpClient.GetAsync($"{_settings.Url}/rest/api/2/search?jql=assignee={assignee}");
+                // Проверяет успешность запроса
+                response.EnsureSuccessStatusCode();
+                // Читает содержимое ответа в виде строки JSON
+                json = await response.Content.ReadAsStringAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Ошибка: {ex.Message}");
+                //if (_generalSettings.TestMode)
+                //{   
+                    Console.WriteLine("Тестовый режим включен. Используются тестовые данные.");
+                    json = File.ReadAllText("/Users/mihailsokolov/git/assistant_with_rag/PAssistant/TestData/JiraTestResponse.json");
+                //}
+            }
 
             // Парсит строку JSON в документ JSON
             var document = JsonDocument.Parse(json);

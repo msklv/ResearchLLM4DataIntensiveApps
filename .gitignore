@@ -183,3 +183,10 @@ devops_book.md
 
 # Local configuration files
 .DS_Store
+
+
+
+### PAssistant
+
+# Test data files
+/PAssistant/TestData/JiraTestResponse.json
