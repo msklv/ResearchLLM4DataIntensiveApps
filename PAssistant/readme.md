@@ -24,6 +24,7 @@ dotnet user-secrets set "Jira:Url" "https://jira.your_company.com"
 
 ## Структура проекта
 
+```tree
 PAssistant/
 ├── appsettings.json                - Конфигурация приложения
 ├── Program.cs                      - Точка входа
@@ -37,4 +38,4 @@ PAssistant/
 │   ├── JiraSkill.cs
 ├── Validators/                     - Проверки
 │   ├── StartupValidator.cs         - Проверки настроек и окружения при запуске
-
+```
