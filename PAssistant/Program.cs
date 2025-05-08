@@ -5,10 +5,14 @@
 using Microsoft.SemanticKernel;
 using PAssistant.Settings;
 using PAssistant.Skills;
+using PAssistant.Validators;
 using Microsoft.SemanticKernel.Connectors.Ollama;
 using Microsoft.SemanticKernel.ChatCompletion;
 
 var settings = AppSettings.Current;         // Получаем настройки из конфигурации
+
+await StartupValidator.ValidateAsync(AppSettings.Current); // Проверяем настройки и доступность сервисов
+
 
 var builder = Kernel.CreateBuilder();       // Создаем билдер для ядра
 
@@ -37,6 +41,7 @@ Console.WriteLine("""
     - Is the light on?
     - Turn the light off please.
     - Set an alarm for 6:00 am.
+    - Какие у меня задачи в  Jira на сегодня?
     """);
 
 Console.Write("> ");

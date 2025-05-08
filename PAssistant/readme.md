@@ -17,13 +17,24 @@
 ```bash
 dotnet user-secrets init
 dotnet user-secrets set "Jira:AuthToken" "your_token_here"
+dotnet user-secrets set "Jira:Url" "https://jira.your_company.com"
 ```
 
 В дальнейшем планируется перейти на `NetEscapades.Configuration.SecretManager` или внешнего `Key Vault`.
 
 ## Структура проекта
 
-* Settings — для конфигураций
-* Skills — для плагинов Semantic Kernel
-* Services — для бизнес-логики
-* Models — для структур данных
+PAssistant/
+├── appsettings.json                - Конфигурация приложения
+├── Program.cs                      - Точка входа
+├── publish-all.ps1                 - Сборка и публикация проекта под все платформы
+├── Settings/                       - Работа с конфигурацией и инициализация
+│   ├── AppSettings.cs
+│   ├── GeneralSettings.cs
+│   ├── JiraSettings.cs
+│   ├── OllamaSettings.cs
+├── Skills/                         - Навыки Semantic Kernel
+│   ├── JiraSkill.cs
+├── Validators/                     - Проверки
+│   ├── StartupValidator.cs         - Проверки настроек и окружения при запуске
+
