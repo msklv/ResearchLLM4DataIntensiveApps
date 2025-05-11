@@ -1,14 +1,20 @@
-# P Assistant
+# PAssistant
 
 * Личный ассистент с подключении к Jira, Почте и Календарю и локальной документации
 * Основан на Microsoft Semantic Kernel и C# (.NET SDK 8.0 )
 * Используются с локальные open source LLM модели через Ollama
+* Перехват аудио потока созвонов и вывод подсказок
 
 ## Зависимости
 
 * .NET SDK 9.0 или выше
 * Microsoft Semantic Kernel [Документация](https://learn.microsoft.com/en-us/semantic-kernel/overview/)
-* NuGet пакеты, указанные в файле `PAssistant.csproj`
+
+## Краткое описание элементов
+
+* [Ollama](https://ollama.com/) - инструмент для работы с моделями LLM локально, на Хосте пользователя.
+* [Qdrant](https://qdrant.tech/) - векторная база данных, которая позволяет хранить и обрабатывать векторные представления данных.
+* [Semantic Kernel](https://github.com/microsoft/semantic-kernel) - библиотека для создания приложений с использованием языковых моделей и интеграции с внешними источниками данных от Microsoft на C#.
 
 ## Хранение чувствительной информации
 
