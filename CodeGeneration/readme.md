@@ -35,6 +35,8 @@
 
 ### Установка Ollama и запуск
 
+По инструкции с [официального сайта](https://ollama.com/download), или с помощью Homebrew:
+
 ```bash
 brew install ollama/tap/ollama
 ```
@@ -59,8 +61,18 @@ ollama serve
 
 ### Установка
 
-### Настройка
+Из маркетплейса VSCode [Continue](https://marketplace.visualstudio.com/items?itemName=Continue.continue).
 
-Есть вариант ini новый yaml, лучше выбирать 2-рой вариант.
+### Пример конфигурации для Ollama
 
-`.continue/assistants/MyAssistant.yaml` - Пример конфигурации Yaml.
+Есть вариант ini формата настроек и новый yaml, лучше выбирать 2-рой вариант.
+
+[MyAssistant.yaml](../.continue/assistants/MyAssistant.yaml) - Пример конфигурации Yaml.
+
+Настройка провайдера [Ollama](https://docs.continue.dev/customize/model-providers/ollama).
+Глубокая настройка [continue](https://docs.continue.dev/customize/deep-dives/autocomplete).
+
+### Добавляем контекст
+
+- https://docs.continue.dev/customize/tutorials/build-your-own-context-provider
+- https://docs.continue.dev/customize/tutorials/custom-code-rag
