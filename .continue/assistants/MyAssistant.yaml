@@ -14,8 +14,6 @@ models:
   - name: qwen2.5-coder
     provider: ollama
     model: qwen2.5-coder:7b-instruct-q6_K
-    defaultCompletionOptions:
-      temperature: 0.7
 
   - name: gemma3:12b
     provider: ollama
@@ -31,12 +29,18 @@ models:
       - edit
       - apply
 
-  - name: qwen2.5-coder autocomplete
+  - name: local qwen2.5-coder autocomplete
     provider: ollama
     model: qwen2.5-coder:7b-instruct-q6_K
     roles:
       - autocomplete      
 
+  - name: local phi4-mini-reasoning autocomplete
+    provider: ollama
+    model: phi4-mini-reasoning:3.8b-q8_0
+    roles:
+      - autocomplete  
+ 
 context:
   - provider: file
   - provider: currentFile
