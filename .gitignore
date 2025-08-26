@@ -174,22 +174,20 @@ cython_debug/
 .pypirc
 
 
-
 # Local configuration files
 .DS_Store
 
-### PAssistant
+# PAssistant
 
-# Test data files
+## Test data files
 /PAssistant/TestData/JiraTestResponse.json
 /PAssistant/TestData/JiraTestResponse.json.zip
 
 
 
-### Demo Agent with RAG
+# Agent with RAG
 
-# DB Data 
-/DemoAgentWithRag/qdrant_data
-
-#Python Environment 
-/DemoAgentWithRag/rag_env
+## DB Data 
+/AgentWithRag/qdrant_data
+## Python Environment
+/AgentWithRag/rag_env
