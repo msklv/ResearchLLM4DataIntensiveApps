@@ -16,14 +16,16 @@ services:
     container_name: open-webui
     restart: unless-stopped
     environment:
-      # Ollama API URL (если Ollama запущена локально)
+      # https://docs.openwebui.com/getting-started/env-configuration/
+      # Ollama API URL
       - OLLAMA_BASE_URL=http://host.docker.internal:11434
-      # При необходимости можно задать Qdrant URL для расширений/плагинов
-      - QDRANT_URL=http://qdrant:6333
-      # Подключение к внешнему OpenAI-совместимому API Sber Cloud
+      # Векторная БД
+      - VECTOR_DB=qdrant
+      - QDRANT_URI=http://qdrant:6333/
+
+      # Подключение к внешнему OpenAI-совместимому API - Sber Cloud
       - OPENAI_API_BASE_URL=https://foundation-models.api.cloud.ru/v1
       - OPENAI_API_KEY=${OPENAI_API_KEY}
-
 
     ports:
       - "3000:8080"   # WebUI доступно на http://localhost:3000
