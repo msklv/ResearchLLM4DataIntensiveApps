@@ -1,0 +1,37 @@
+services:
+  qdrant:
+    image: qdrant/qdrant:latest
+    container_name: qdrant
+    restart: unless-stopped
+    ports:
+      - "6333:6333"   # HTTP API
+      - "6334:6334"   # gRPC
+    volumes:
+      - ./.data/qdrant:/qdrant/storage
+    networks:
+      - ragnet
+
+  open-webui:
+    image: ghcr.io/open-webui/open-webui:latest
+    container_name: open-webui
+    restart: unless-stopped
+    environment:
+      # Ollama API URL (если Ollama запущена локально)
+      - OLLAMA_BASE_URL=http://host.docker.internal:11434
+      # При необходимости можно задать Qdrant URL для расширений/плагинов
+      - QDRANT_URL=http://qdrant:6333
+      # Подключение к внешнему OpenAI-совместимому API Sber Cloud
+      - OPENAI_API_BASE_URL=https://foundation-models.api.cloud.ru/v1
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+
+
+    ports:
+      - "3000:8080"   # WebUI доступно на http://localhost:3000
+    volumes:
+      - ./.data/openwebui:/app/backend/data
+    networks:
+      - ragnet
+
+networks:
+  ragnet:
+    driver: bridge
