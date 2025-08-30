@@ -32,6 +32,7 @@ rm -rf ./.data
 
 - WebUI: <http://localhost:3000/>
 - Qdrant: <http://localhost:6333/dashboard>
+- Redis Web: <http://localhost:8081>
 
 ## Использование Open WebUI
 

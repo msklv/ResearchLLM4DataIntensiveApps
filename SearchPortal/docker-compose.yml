@@ -1,4 +1,34 @@
 services:
+  redis:
+    image: redis:7.2-alpine
+    container_name: redis
+    volumes:
+      - ./.data/redis:/data
+    command: ["redis-server", "--save", "900", "1"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    restart: always
+    networks:
+      - ragnet
+
+  redis_commander:
+    image: rediscommander/redis-commander:latest
+    platform: linux/amd64          # <-- обязателен для Apple Silicon (M)
+    container_name: redis_commander
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      # - REDIS_PASSWORD=${REDIS_PASSWORD}
+    ports:
+      - "8081:8081"
+    depends_on:
+      - redis
+    networks:
+      - ragnet
+
   qdrant:
     image: qdrant/qdrant:latest
     container_name: qdrant
@@ -17,23 +47,46 @@ services:
     restart: unless-stopped
     environment:
       # https://docs.openwebui.com/getting-started/env-configuration/
-      # Ollama API URL
+
+      # ── API‑параметры ───────────────────────────────────────
       - OLLAMA_BASE_URL=http://host.docker.internal:11434
-      # Векторная БД
+
+      # ── Векторная БД ───────────────────────────────────────
       - VECTOR_DB=qdrant
       - QDRANT_URI=http://qdrant:6333/
-      # Подключение к внешнему OpenAI-совместимому API - Sber Cloud
+
+      # ── OpenAI‑совместимый бекенд (Sber Cloud) ───────────────────────
       - OPENAI_API_BASE_URL=https://foundation-models.api.cloud.ru/v1
       - OPENAI_API_KEY=${OPENAI_API_KEY}
-      # Настройки
+
+      # ── Общие настройки ─────────────────────────────────────
       - OFFLINE_MODE=True
+
+      # ── Redis (кеш + сессии) ─────────────────────────────────────
+      # тип кеша
+      - CACHE_TYPE=redis
+      # URL соединения (можно задать отдельные параметры ниже – они будут переопределены)
+      - CACHE_REDIS_URL=redis://redis:6379/0
+      # явные параметры (необязательно, но делают конфиг более читаемым)
+      - CACHE_REDIS_HOST=redis
+      - CACHE_REDIS_PORT=6379
+      - CACHE_REDIS_DB=0
+      # если хотите хранить сессии в Redis (рекомендовано)
+      - SESSION_TYPE=redis
+      - SESSION_REDIS=redis://redis:6379/1
+      - SESSION_PERMANENT=False
+    depends_on:
+      - redis
+      - qdrant
     ports:
       - "3000:8080"   # WebUI доступно на http://localhost:3000
     volumes:
       # Данные
       - ./.data/openwebui:/app/backend/data
+      # Конфиг
+      #- backend/open_webui/config.py
       # Привязка к knowledge
-      - ./auto_knowledge_selection.py:/app/backend/filters/auto_knowledge_selection.py
+      #- ./auto_knowledge_selection.py:/app/backend/filters/auto_knowledge_selection.py
     networks:
       - ragnet
 
