@@ -12,7 +12,7 @@ services:
       - ragnet
 
   open-webui:
-    image: ghcr.io/open-webui/open-webui:latest
+    image: ghcr.io/open-webui/open-webui:v0.6.26
     container_name: open-webui
     restart: unless-stopped
     environment:
@@ -22,15 +22,18 @@ services:
       # Векторная БД
       - VECTOR_DB=qdrant
       - QDRANT_URI=http://qdrant:6333/
-
       # Подключение к внешнему OpenAI-совместимому API - Sber Cloud
       - OPENAI_API_BASE_URL=https://foundation-models.api.cloud.ru/v1
       - OPENAI_API_KEY=${OPENAI_API_KEY}
-
+      # Настройки
+      - OFFLINE_MODE=True
     ports:
       - "3000:8080"   # WebUI доступно на http://localhost:3000
     volumes:
+      # Данные
       - ./.data/openwebui:/app/backend/data
+      # Привязка к knowledge
+      - ./auto_knowledge_selection.py:/app/backend/filters/auto_knowledge_selection.py
     networks:
       - ragnet
 

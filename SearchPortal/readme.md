@@ -24,6 +24,10 @@ docker compose down
 rm -rf ./.data
 ```
 
+## Архитектура
+
+![arh](arh.png)
+
 ### Открыть
 
 - WebUI: <http://localhost:3000/>
