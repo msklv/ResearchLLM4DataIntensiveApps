@@ -1,4 +1,7 @@
 services:
+  # -------------------------------------------------
+  # Redis – кэш/сессии
+  # -------------------------------------------------
   redis:
     image: redis:7.2-alpine
     container_name: redis
@@ -29,6 +32,10 @@ services:
     networks:
       - ragnet
 
+
+  # -------------------------------------------------
+  # Qdrant – векторная база
+  # -------------------------------------------------
   qdrant:
     image: qdrant/qdrant:latest
     container_name: qdrant
@@ -41,6 +48,10 @@ services:
     networks:
       - ragnet
 
+
+  # -------------------------------------------------
+  # Open‑WebUI
+  # -------------------------------------------------
   open-webui:
     image: ghcr.io/open-webui/open-webui:v0.6.26
     container_name: open-webui
@@ -75,6 +86,11 @@ services:
       - SESSION_TYPE=redis
       - SESSION_REDIS=redis://redis:6379/1
       - SESSION_PERMANENT=False
+
+      # ---- Извлечение текста -----------------------------
+      - CONTENT_EXTRACTION_ENGINE=tika
+      - TIKA_SERVER_URL=http://tika:9998
+
     depends_on:
       - redis
       - qdrant
@@ -87,6 +103,26 @@ services:
       #- backend/open_webui/config.py
       # Привязка к knowledge
       #- ./auto_knowledge_selection.py:/app/backend/filters/auto_knowledge_selection.py
+    networks:
+      - ragnet
+
+  # -------------------------------------------------
+  # Apache Tika – извлечение текста/медиа из файлов
+  # -------------------------------------------------
+  tika:
+    image: apache/tika:latest
+    container_name: tika
+    platform: linux/amd64                # Tika официально только amd64
+    restart: unless-stopped
+    ports:
+      - "9998:9998"                     # HTTP‑API Tika
+    #environment:
+      # Если хотите задать параметры JVM (опционально)
+      # - JAVA_OPTS=-Xmx2g
+    # При желании можно примонтировать директорию с вашими файлами,
+    # чтобы Tika могла работать с ними локально
+    # volumes:
+    #   - ./tika-files:/tmp/files
     networks:
       - ragnet
 
