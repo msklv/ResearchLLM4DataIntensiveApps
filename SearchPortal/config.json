@@ -1,6 +1,15 @@
 {
   "version": 0,
-  "ui": { "enable_signup": false },
+  "ui": {
+    "enable_signup": false,
+    "default_user_role": "pending",
+    "enable_community_sharing": false,
+    "enable_message_rating": true,
+    "enable_user_webhooks": true,
+    "pending_user_overlay_title": "",
+    "pending_user_overlay_content": "",
+    "watermark": ""
+  },
   "rag": {
     "embedding_engine": "ollama",
     "embedding_model": "bge-m3",
@@ -110,5 +119,49 @@
   },
   "file": { "image_compression_width": null, "image_compression_height": null },
   "google_drive": { "enable": false },
-  "onedrive": { "enable": false }
+  "onedrive": { "enable": false },
+  "audio": {
+    "tts": {
+      "openai": { "api_base_url": "https://api.openai.com/v1", "api_key": "" },
+      "api_key": "",
+      "engine": "transformers",
+      "model": "tts-1",
+      "voice": "",
+      "split_on": "punctuation",
+      "azure": {
+        "speech_region": "",
+        "speech_base_url": "",
+        "speech_output_format": "audio-24khz-160kbitrate-mono-mp3"
+      }
+    },
+    "stt": {
+      "openai": { "api_base_url": "https://api.openai.com/v1", "api_key": "" },
+      "engine": "",
+      "model": "",
+      "supported_content_types": [""],
+      "whisper_model": "base",
+      "deepgram": { "api_key": "" },
+      "azure": {
+        "api_key": "",
+        "region": "",
+        "locales": "",
+        "base_url": "",
+        "max_speakers": ""
+      }
+    }
+  },
+  "webhook_url": "",
+  "auth": {
+    "admin": { "show": true },
+    "api_key": {
+      "enable": true,
+      "endpoint_restrictions": false,
+      "allowed_endpoints": ""
+    },
+    "jwt_expiry": "-1"
+  },
+  "webui": { "url": "" },
+  "channels": { "enable": false },
+  "notes": { "enable": false },
+  "ldap": { "enable": false }
 }

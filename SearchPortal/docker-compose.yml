@@ -116,12 +116,12 @@ services:
     restart: unless-stopped
     ports:
       - "9998:9998"                     # HTTP‑API Tika
-    #environment:
-      # Если хотите задать параметры JVM (опционально)
-      # - JAVA_OPTS=-Xmx2g
+    environment:
+      - JAVA_OPTS=-Xmx2g                     # при необходимости увеличить heap
+    #volumes:
+    #  - ./tika-config.xml:/etc/tika/tika-config.xml:ro
     # При желании можно примонтировать директорию с вашими файлами,
     # чтобы Tika могла работать с ними локально
-    # volumes:
     #   - ./tika-files:/tmp/files
     networks:
       - ragnet
