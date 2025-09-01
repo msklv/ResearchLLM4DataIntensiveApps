@@ -1,46 +1,51 @@
-# This file is a configuration for the Continue platform.
-
-name: configurationForRAGAssistant
+name: global-configuration
 version: 0.0.1
 schema: v1
-# https://docs.continue.dev/yaml-migration
-
-
+# https://docs.continue.dev/features/agent/model-setup
 models:
   - name: Ollama Autodetect
     provider: ollama
     model: AUTODETECT
-    
+
   - name: qwen2.5-coder
     provider: ollama
     model: qwen2.5-coder:7b-instruct-q6_K
 
-  - name: gemma3:12b
-    provider: ollama
-    model: gemma3:12b-it-q4_K_M
-
-  - name: nebius - Qwen2.5-Coder-32B
-    provider: nebius
-    model: Qwen/Qwen2.5-Coder-32B-Instruct
-    apiKey: ${NEBIUS_API_KEY}
+  - name: GPT OSS 120B Sber
+    provider: openai
+    model: openai/gpt-oss-120b
+    apiKey: ${{ secrets.SBER_API_KEY }}
+    apiBase: https://foundation-models.api.cloud.ru/v1
+    defaultCompletionOptions:
+      contextLength: 131072
+    capabilities:
+      - tool_use
     roles:
-      - autocomplete
+      - apply
       - chat
       - edit
-      - apply
 
-  - name: local qwen2.5-coder autocomplete
+  - name: qwen2.5-coder autocomplete local
     provider: ollama
     model: qwen2.5-coder:7b-instruct-q6_K
     roles:
-      - autocomplete      
+      - autocomplete
 
-  - name: local phi4-mini-reasoning autocomplete
+  - name: nomic-embed-text latest
     provider: ollama
-    model: phi4-mini-reasoning:3.8b-q8_0
+    model: nomic-embed-text:latest
     roles:
-      - autocomplete  
- 
+      - embed
+
+  - name: qwen2.5-coder autocomplete Sber
+    provider: nebius
+    model: Qwen/Qwen2.5-Coder-32B-Instruct
+    apiKey: ${{ secrets.SBER_API_KEY }}
+    apiBase: https://foundation-models.api.cloud.ru/v1
+    roles:
+      - autocomplete
+
+
 context:
   - provider: file
   - provider: currentFile
@@ -54,16 +59,15 @@ context:
   - provider: diff
   - provider: folder
   - provider: terminal
-
 rules:
   - Отвечай кратко и по существу
   - Всегда используй русский язык
-
 prompts:
   - name: code_review
     description: Check for mistakes in my code
-    prompt: |
-      Please read the highlighted code and check for any mistakes. You should look for the following, and be extremely vigilant:
+    prompt: >
+      Please read the highlighted code and check for any mistakes. You should
+      look for the following, and be extremely vigilant:
         - Syntax errors
         - Logic errors
         - Security vulnerabilities
