@@ -11,7 +11,7 @@ models:
     provider: ollama
     model: qwen2.5-coder:7b-instruct-q6_K
 
-  - name: GPT OSS 120B Sber
+  - name: SBER - GPT OSS 120B
     provider: openai
     model: openai/gpt-oss-120b
     apiKey: ${{ secrets.SBER_API_KEY }}
@@ -37,7 +37,7 @@ models:
     roles:
       - embed
 
-  - name: qwen2.5-coder autocomplete Sber
+  - name: SBER - qwen2.5-coder autocomplete 
     provider: nebius
     model: Qwen/Qwen2.5-Coder-32B-Instruct
     apiKey: ${{ secrets.SBER_API_KEY }}
@@ -45,6 +45,13 @@ models:
     roles:
       - autocomplete
 
+  - name: SBER - Qwen3-Coder-480B-A35B-Instruct
+    provider: nebius
+    model: Qwen/Qwen3-Coder-480B-A35B-Instruct
+    apiKey: ${{ secrets.SBER_API_KEY }}
+    apiBase: https://foundation-models.api.cloud.ru/v1
+    roles:
+      - autocomplete
 
 context:
   - provider: file
