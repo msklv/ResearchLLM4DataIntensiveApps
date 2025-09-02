@@ -37,8 +37,6 @@ LLM - это большие языковые модели, которые обу
 
 ![Архитектура RAG](Advanced-RAG.png)
 
-Источник - <https://d3lkc3n5th01x7.cloudfront.net/wp-content/uploads/2024/08/26051537/Advanced-RAG.png>
-
 ### Архитектура Агентов
 
 ![Архитектур Агентов](Screenshot-2025-04-21at2.41.51PM.png)
