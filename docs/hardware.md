@@ -9,9 +9,11 @@
 
 ### Примеры российских платформ
 
-* ~[https://yadro.com/ru/gpu_servers/g4208p_g3](https://yadro.com/ru/gpu_servers/g4208p_g3)~
-* ~[https://www.karma-group.ru/catalog/gpu-servers-qtech/](https://www.karma-group.ru/catalog/gpu-servers-qtech/)~
-* ~[https://hyperpc.ru/server/artificial-intelligence](https://hyperpc.ru/server/artificial-intelligence)~
+* [https://yadro.com/ru/gpu_servers/g4208p_g3](https://yadro.com/ru/gpu_servers/g4208p_g3)
+* [https://www.karma-group.ru/catalog/gpu-servers-qtech/](https://www.karma-group.ru/catalog/gpu-servers-qtech/)
+* [https://hyperpc.ru/server/artificial-intelligence](https://hyperpc.ru/server/artificial-intelligence)
+
+  
 ⠀Нахождение принципиальных отличий требует отдельного исследования, для примера возьмем 1 вариант.
 
 ## Принципиальные отличия классов
