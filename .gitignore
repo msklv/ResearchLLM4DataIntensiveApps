@@ -195,3 +195,7 @@ cython_debug/
 
 # SearchPortal data
 /SearchPortal/.data/*
+
+
+# N8N Data 
+/n8n/.data/

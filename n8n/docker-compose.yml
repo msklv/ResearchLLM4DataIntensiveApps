@@ -103,6 +103,57 @@ services:
     networks:
       - default
 
+  # -------------------------------------------------
+  # Redis – кэш/сессии
+  # -------------------------------------------------
+  redis:
+    image: redis:7.2-alpine
+    container_name: redis
+    volumes:
+      - ./.data/redis:/data
+    command: ["redis-server", "--save", "900", "1"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    restart: always
+    networks:
+      - default
+
+  redis_commander:
+    image: rediscommander/redis-commander:latest
+    platform: linux/amd64          # <-- обязателен для Apple Silicon (M)
+    container_name: redis_commander
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      # - REDIS_PASSWORD=${REDIS_PASSWORD}
+    ports:
+      - "8081:8081"
+    depends_on:
+      - redis
+    networks:
+      - default
+
+
+  # -------------------------------------------------
+  # Qdrant – векторная база
+  # -------------------------------------------------
+  qdrant:
+    image: qdrant/qdrant:latest
+    container_name: qdrant
+    restart: unless-stopped
+    ports:
+      - "6333:6333"   # HTTP API
+      - "6334:6334"   # gRPC
+    volumes:
+      - ./.data/qdrant:/qdrant/storage
+    networks:
+      - default
+
+
+
 volumes:
   n8n_data:
   db_postgres:
