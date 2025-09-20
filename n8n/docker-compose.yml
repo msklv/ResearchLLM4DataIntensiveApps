@@ -1,0 +1,112 @@
+services:
+# -------------------------------------------------
+# n8n – визуальный движок оркестрации
+# -------------------------------------------------
+  n8n:
+    container_name: n8n
+    # Официальный образ n8n (всегда актуальная версия)
+    image: artifactory.gnivc.ru/rgb-devops-docker-local/n8nio/n8n:1.109.2
+    platform: linux/amd64
+    ports:
+      - "5678:5678"
+    restart: unless-stopped
+    # Если хотите использовать PostgreSQL вместо встроенного SQLite
+    # (у вас уже развёрнут Postgres, так что подключаем его)
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      # https://docs.n8n.io/hosting/configuration/environment-variables/
+      # Основной URL, под которым будет доступен UI
+      - N8N_HOST=0.0.0.0
+      #- N8N_PATH=/n8n
+      - N8N_PORT=5678
+      - N8N_PROTOCOL=http
+      - N8N_SECURE_COOKIE=false
+      #- N8N_EDITOR_BASE_URL=https://n8n-ops.amis.gnivc.msk/
+      #- WEBHOOK_URL=https://n8n-ops.amis.gnivc.msk/
+      #- N8N_LOG_LEVEL=debug
+      #- N8N_PROXY_HOPS=1
+      # Базовая аутентификация (можно отключить, но в prod лучше включить)
+      - N8N_BASIC_AUTH_ACTIVE=true
+      - N8N_BASIC_AUTH_USER=${N8N_USER}
+      - N8N_BASIC_AUTH_PASSWORD=${N8N_PASSWORD}
+      # Хранилище воркфлоу в PostgreSQL (опционально)
+      - DB_TYPE=postgresdb
+      - DB_POSTGRESDB_HOST=datalens-postgres
+      - DB_POSTGRESDB_PORT=5432
+      - DB_POSTGRESDB_DATABASE=postgres
+      - DB_POSTGRESDB_USER=${POSTGRES_USER}
+      - DB_POSTGRESDB_PASSWORD=${POSTGRES_PASSWORD}
+      # Токен‑секрет (для подписей webhook‑ов и т.п.)
+      #- NODE_FUNCTION_ALLOW_BUILTIN=*
+      #- NODE_FUNCTION_ALLOW_EXTERNAL=*
+      # Тонкая настройка N8N
+      #- EXECUTIONS_TIMEOUT=3600
+      - GENERIC_TIMEZONE=Europe/Moscow     # Зона
+      - N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=true
+      - N8N_RUNNERS_ENABLED=true
+      - N8N_BLOCK_ENV_ACCESS_IN_NODE=false
+      # isolation - https://docs.n8n.io/hosting/configuration/configuration-examples/isolation/
+      - N8N_DIAGNOSTICS_ENABLED=false
+      #- N8N_VERSION_NOTIFICATIONS_ENABLED=false
+      #- N8N_TEMPLATES_ENABLED=false
+    volumes:
+      - n8n_data:/home/node/.n8n
+      #- ./n8n/node_modules:/home/node/.n8n/nodes/node_modules
+      #- ./n8n/package.json:/home/node/.n8n/nodes/package.json
+    networks:
+      - default
+
+  postgres:
+    container_name: datalens-postgres
+    image: artifactory.gnivc.ru/rgb-devops-docker-local/ghcr.io/datalens-tech/datalens-postgres:16
+    platform: linux/amd64
+    env_file: .env
+    healthcheck:
+      test: ["CMD", "pg_isready", "-d", "${POSTGRES_DB_US:-pg-us-db}", "-U", "${POSTGRES_USER:-pg-user}"]
+      interval: 5s
+      retries: 10
+      start_period: 3s
+    ports:
+      - "5432:5432"  
+    environment:
+      HC: ${HC:-0}
+      CONTROL_API_CRYPTO_KEY: "${CONTROL_API_CRYPTO_KEY}"
+      US_ENDPOINT: ${US_ENDPOINT:-http://us:8080}
+      #
+      POSTGRES_HOST: ${POSTGRES_HOST:-localhost}
+      POSTGRES_PORT: ${POSTGRES_PORT:-5432}
+      #
+      POSTGRES_USER: ${POSTGRES_USER:-pg-user}
+      #
+      POSTGRES_DB_COMPENG: ${POSTGRES_DB_COMPENG:-pg-compeng-db}
+      POSTGRES_DB_AUTH: ${POSTGRES_DB_AUTH:-pg-auth-db}
+      POSTGRES_DB_US: ${POSTGRES_DB_US:-pg-us-db}
+      POSTGRES_DB_DEMO: ${POSTGRES_DB_DEMO:-pg-demo-db}
+      POSTGRES_DB_META_MANAGER: ${POSTGRES_DB_META_MANAGER:-pg-meta-manager-db}
+      POSTGRES_DB_TEMPORAL: ${POSTGRES_DB_TEMPORAL:-pg-temporal-db}
+      POSTGRES_DB_TEMPORAL_VISIBILITY: ${POSTGRES_DB_TEMPORAL_VISIBILITY:-pg-temporal-visibility-db}
+      #
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
+      #
+      INIT_DEMO_DATA: ${INIT_DEMO_DATA:-1}
+      INIT_DB_DEMO: ${INIT_DB_DEMO:-1}
+      #
+      INIT_DB_AUTH: ${INIT_DB_AUTH:-1}
+      INIT_DB_META_MANAGER: ${INIT_DB_META_MANAGER:-1}
+      INIT_DB_TEMPORAL: ${INIT_DB_TEMPORAL:-1}
+      #
+      INIT_EXTERNAL_POSTGRES: ${INIT_EXTERNAL_POSTGRES:-0}
+    volumes:
+      - db_postgres:/var/lib/postgresql/data
+    networks:
+      - default
+
+volumes:
+  n8n_data:
+  db_postgres:
+
+networks:
+  default:
+    driver: bridge
