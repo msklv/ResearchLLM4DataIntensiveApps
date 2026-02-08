@@ -79,3 +79,7 @@ Telegram group automation using n8n pipelines
 
 ### mac-agent
 Automatization of macOS
+
+## Rules
+
+- Always reply to the user in Russian unless explicitly stated otherwise.
