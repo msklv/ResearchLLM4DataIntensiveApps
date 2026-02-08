@@ -71,8 +71,8 @@ Portal with base RAG implementation using Qdrant vector
 ### AgentWithRag
 Research notebook for RAG agent implementation
 
-### CodeGeneration
-VSCode implementation of code generation with local LLM
+### Code Autocomplete
+IDE VSCode implementation of code Autocomplete with local LLM
 
 ### N8N Automation
 Telegram group automation using n8n pipelines
