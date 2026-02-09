@@ -1,10 +1,11 @@
-# Инструменты на MacOS 
+# AI Инструменты для личной эффективности разработчика
 
-Models, tools, memory, context—portable and yours. A native Mac app for any AI provider, local. Open source.
+## [Подготовка MacOS для работы с AI](/docs/MacBookLLMSetupGuide.md)
 
-- https://osaurus.ai
+## AI Инструменты для личной эффективности разработчика
+
+- https://osaurus.ai - Models, tools, memory, context—portable and yours. A native Mac app for any AI provider, local. Open source.
 - LM Studio 
-- Ollama
 - MLX квантизация
 
 

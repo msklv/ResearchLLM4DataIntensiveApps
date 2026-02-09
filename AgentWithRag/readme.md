@@ -1,39 +1,49 @@
 # Demo Agent with RAG
 
-## Окружение запуска
+## [Подготовка окружения](/docs/MacBookLLMSetupGuide.md)
 
-* Python 3.13 ([установка](python.md))
+* Python и UV
 * Docker и Docker Compose
 * Jupyter Lab и Jupyter Notebook
-* Ollama
+* VS Code
+* Ollama или LM Studio
 
 ## Краткое описание элементов
 
-* [Ollama](https://ollama.com/) - инструмент для работы с моделями LLM локально, на Хосте пользователя.
 * [Qdrant](https://qdrant.tech/) - векторная база данных, которая позволяет хранить и обрабатывать векторные представления данных.
 * [LangChain](https://python.langchain.com/docs/introduction/) - библиотека для работы с LLM, которая предоставляет инструменты для создания приложений на основе языковых моделей, в том числе Агентного поиска, обработки текста и других задач. [Архитектура](https://github.com/langchain-ai/rag-from-scratch)
 * [Jupyter Notebook](https://jupyter.org/) - интерактивная среда для работы с Python и другими языками программирования. Она позволяет создавать и делиться документами, содержащими код, текст и визуализации.
 
 ## Описание моделей
 
-* [mxbai-embed-large](https://huggingface.co/mixedbread-ai/mxbai-embed-large-v1) - модель эмбеддинга, которая используется для преобразования текстов в векторные представления. Она позволяет эффективно представлять текстовые данные в виде векторов, что упрощает их обработку и анализ.
-* [Gemma3](https://huggingface.co/google/gemma-3-12b-it) - модель от Google, для генерации текста на основе входных данных. Она может быть использована для создания различных приложений, таких как чат-боты, системы рекомендаций и другие.
+### Бенчмарки сравнения LLM для русского языка
 
-## Ollama
+* Рейтинг на HF https://huggingface.co/models?language=ru&other=text-embeddings-inference&sort=trending
+* <https://mera.a-ai.ru/ru/text>
+* <https://huggingface.co/spaces/mteb/leaderboard>
 
-- Установка Ollama:
+### Эмбединги
 
-```bash
-brew install ollama/tap/ollama
-```
+Для преобразования текстов в векторные представления:
 
-- Запуск Ollama:
+* [mxbai-embed-large](https://huggingface.co/mixedbread-ai/mxbai-embed-large-v1)
+* ai-forever/FRIDA
+* Qwen/Qwen3-Embedding-8B
+* BAAI/bge-m3 
+
+### Модели для генерации текста
+
+* [Gemma3](https://huggingface.co/google/gemma-3-12b-it) - довольно быстрая и эффективная LLM модель от Google.
+* openai/gpt-oss-20b - открытая средняя модель от Open AI
+* Qwen/Qwen3-8B - хорошая малая модель от Alibaba
+
+## Локальный инференс 
+
+- Запуск на Ollama:
 
 ```bash
 export OLLAMA_TIMEOUT=600s      # Увеличиваем таймаут API до 10 минут
 export OLLAMA_LOAD_TIMEOUT=10m  # Увеличиваем таймаут загрузки модели до 10 минут
-export OLLAMA_LOG_LEVEL=debug   # Устанавливаем уровень логирования на debug, если необходимо.
-export OLLAMA_DEBUG=true        # Включаем режим отладки
 ollama pull mxbai-embed-large
 ollama run gemma3:12b-it-q4_K_M
 ollama serve
