@@ -30,16 +30,16 @@
 ## LLM модели для работы агентов
 
 ### Компактные модели
-- qwen3-coder-30b
-- glm-4.7-flash
+- Qwen/Qwen3-Coder-30B-A3B-Instruct
+- zai-org/GLM-4.7-Flash
 
 ### Большие модели
 - Qwen/Qwen3-Coder-Next
 - Qwen/Qwen3-Coder-480B-A35B-Instruct
-- glm-4.7
-- kimi-k2.5
-- MiniMax M2.1
-- DeepSeek-V3.2
+- zai-org/GLM-4.7-Flash
+- moonshotai/Kimi-K2.5
+- MiniMaxAI/MiniMax-M2.1
+- deepseek-ai/DeepSeek-V3.2
 
 Рекомендации по моделям от [OpenCode](https://opencode.ai/docs/models/#recommended-models).
 
