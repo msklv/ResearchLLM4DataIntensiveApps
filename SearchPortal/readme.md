@@ -2,10 +2,12 @@
 
 ## Технологии
 
-- Ollama ([Сбер для теста](https://foundation-models.api.cloud.ru/v1))
-- open-webui
+- Ollama \ LM Studio
+- [Open-WebUI](https://github.com/open-webui/open-webui)
 - [Qdrant](https://qdrant.tech/)
 - Docker
+
+[Инструкция](/docs/MacBookLLMSetupGuide.md) по подготовке окружения.
 
 ## Быстрый старт (docker-compose)
 
