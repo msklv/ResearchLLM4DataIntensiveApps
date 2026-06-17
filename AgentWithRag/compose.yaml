@@ -1,15 +1,85 @@
+name: tei-qdrant
+
 services:
+  tei-cpu:
+    image: ghcr.io/huggingface/text-embeddings-inference:cpu-1.9
+    container_name: tei-embedding-cpu
+    profiles: ["cpu"]
+    restart: unless-stopped
+    ports:
+      - "${TEI_PORT:-9090}:80"
+    volumes:
+      - tei_data:/data
+    command:
+      - --model-id
+      - "${TEI_MODEL:-Qwen/Qwen3-Embedding-0.6B}"
+      - --hostname
+      - "0.0.0.0"
+
+  tei-gpu:
+    image: ghcr.io/huggingface/text-embeddings-inference:1.9
+    container_name: tei-embedding-gpu
+    profiles: ["gpu"]
+    restart: unless-stopped
+    ports:
+      - "${TEI_PORT:-9090}:80"
+    volumes:
+      - tei_data:/data
+    command:
+      - --model-id
+      - "${TEI_MODEL:-Qwen/Qwen3-Embedding-0.6B}"
+      - --hostname
+      - "0.0.0.0"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+
+  ollama-cpu:
+    image: ollama/ollama:latest
+    container_name: ollama-cpu
+    profiles: ["cpu"]
+    restart: unless-stopped
+    ports:
+      - "${OLLAMA_PORT:-11434}:11434"
+    environment:
+      OLLAMA_LOAD_TIMEOUT: "${OLLAMA_LOAD_TIMEOUT:-10m}"
+    volumes:
+      - ollama_data:/root/.ollama
+    command: ["serve"]
+
+  ollama-gpu:
+    image: ollama/ollama:latest
+    container_name: ollama-gpu
+    profiles: ["gpu"]
+    restart: unless-stopped
+    ports:
+      - "${OLLAMA_PORT:-11434}:11434"
+    environment:
+      OLLAMA_LOAD_TIMEOUT: "${OLLAMA_LOAD_TIMEOUT:-10m}"
+      NVIDIA_VISIBLE_DEVICES: all
+      NVIDIA_DRIVER_CAPABILITIES: compute,utility
+    volumes:
+      - ollama_data:/root/.ollama
+    command: ["serve"]
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+
   qdrant:
     image: qdrant/qdrant:latest
     restart: always
     container_name: qdrant
     ports:
-      - 6333:6333
-      - 6334:6334
-    expose:
-      - 6333
-      - 6334
-      - 6335
+      - "6333:6333" # REST/HTTP API, основной порт для большинства интеграций.
+      - "6334:6334" # gRPC API
     configs:
       - source: qdrant_config
         target: /qdrant/config/production.yaml
@@ -20,4 +90,7 @@ configs:
   qdrant_config:
     content: |
       log_level: INFO
-      
+
+volumes:
+  tei_data:
+  ollama_data:

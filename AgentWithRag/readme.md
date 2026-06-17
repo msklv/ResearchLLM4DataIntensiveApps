@@ -22,26 +22,54 @@
 * <https://mera.a-ai.ru/ru/text>
 * <https://huggingface.co/spaces/mteb/leaderboard>
 
+### Модели для генерации текста
+
+* `Qwen/Qwen3.5-4B`
+* `Qwen/Qwen3.5-2B`
+* `Qwen/Qwen3.5-0.8B`
+* `google/gemma-4-E2B-it`
+* `google/gemma-4-E2B-it-assistant`
+* `google/gemma-4-E4B-it`
+* `google/gemma-4-E4B-it-assistant`
+
 ### Эмбединги
 
 Для преобразования текстов в векторные представления:
 
-* [mxbai-embed-large](https://huggingface.co/mixedbread-ai/mxbai-embed-large-v1)
-* ai-forever/FRIDA
-* Qwen/Qwen3-Embedding-8B
-* BAAI/bge-m3 
+* `Qwen/Qwen3-Embedding-0.6B` (default, requires 25GB RAM/vRAM to load)
+* `BAAI/bge-m3` (requires 21GB RAM/vRAM to load)
 
-### Модели для генерации текста
+## Локальный инференс
 
-* [Gemma3](https://huggingface.co/google/gemma-3-12b-it) - довольно быстрая и эффективная LLM модель от Google.
-* openai/gpt-oss-20b - открытая средняя модель от Open AI
-* Qwen/Qwen3-8B - хорошая малая модель от Alibaba
+Запуск окруждения
 
-## Локальный инференс 
+```bash
+#GPU:  
+docker compose --profile gpu up -d 
+#CPU:  
+docker compose --profile cpu up -d 
+```
+
+### Apple Silicon
+
+Для настоящего ускорения на Apple Silicon нужен не Docker, а локальный запуск TEI с Metal:  
+
+```bash
+brew install text-embeddings-inference
+text-embeddings-router --model-id Qwen/Qwen3-Embedding-0.6B --port 9090 .
+```
+
+Документация Hugging Face прямо описывает Metal-вариант как локальную установку на Apple Silicon, а в Docker MPS/Metal сейчас не поддерживается, поэтому контейнерный вариант на Mac фактически CPU-only.
+
+
+
+
+
+
 
 - Запуск на Ollama:
 
-```bash
+
 export OLLAMA_TIMEOUT=600s      # Увеличиваем таймаут API до 10 минут
 export OLLAMA_LOAD_TIMEOUT=10m  # Увеличиваем таймаут загрузки модели до 10 минут
 ollama pull mxbai-embed-large
