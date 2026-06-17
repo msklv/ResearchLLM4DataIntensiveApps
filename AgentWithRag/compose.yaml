@@ -2,8 +2,9 @@ name: tei-qdrant
 
 services:
   tei-cpu:
-    image: ghcr.io/huggingface/text-embeddings-inference:cpu-1.9
+    image: ghcr.io/huggingface/text-embeddings-inference:cpu-1.9.3
     container_name: tei-embedding-cpu
+    platform: linux/amd64
     profiles: ["cpu"]
     restart: unless-stopped
     ports:
@@ -17,8 +18,9 @@ services:
       - "0.0.0.0"
 
   tei-gpu:
-    image: ghcr.io/huggingface/text-embeddings-inference:1.9
+    image: ghcr.io/huggingface/text-embeddings-inference:1.9.3
     container_name: tei-embedding-gpu
+    platform: linux/amd64
     profiles: ["gpu"]
     restart: unless-stopped
     ports:
@@ -39,7 +41,7 @@ services:
               capabilities: [gpu]
 
   ollama-cpu:
-    image: ollama/ollama:latest
+    image: ollama/ollama:0.30.9
     container_name: ollama-cpu
     profiles: ["cpu"]
     restart: unless-stopped
@@ -49,10 +51,15 @@ services:
       OLLAMA_LOAD_TIMEOUT: "${OLLAMA_LOAD_TIMEOUT:-10m}"
     volumes:
       - ollama_data:/root/.ollama
+    healthcheck:
+      test: ["CMD", "ollama", "list"]
+      interval: 15s
+      timeout: 10s
+      retries: 20
     command: ["serve"]
 
   ollama-gpu:
-    image: ollama/ollama:latest
+    image: ollama/ollama:0.30.9
     container_name: ollama-gpu
     profiles: ["gpu"]
     restart: unless-stopped
@@ -64,6 +71,11 @@ services:
       NVIDIA_DRIVER_CAPABILITIES: compute,utility
     volumes:
       - ollama_data:/root/.ollama
+    healthcheck:
+      test: ["CMD", "ollama", "list"]
+      interval: 15s
+      timeout: 10s
+      retries: 20
     command: ["serve"]
     deploy:
       resources:
@@ -73,6 +85,32 @@ services:
               count: all
               capabilities: [gpu]
 
+  ollama-pull-cpu:
+    image: ollama/ollama:0.30.9
+    container_name: ollama-pull-cpu
+    profiles: ["cpu"]
+    depends_on:
+      ollama-cpu:
+        condition: service_healthy
+    environment:
+      OLLAMA_HOST: "http://ollama-cpu:${OLLAMA_PORT:-11434}"
+    entrypoint: ["/bin/sh", "-c"]
+    command: >
+      "ollama pull ${OLLAMA_MODEL}"
+
+  ollama-pull-gpu:
+    image: ollama/ollama:0.30.9
+    container_name: ollama-pull-gpu
+    profiles: ["gpu"]
+    depends_on:
+      ollama-gpu:
+        condition: service_healthy
+    environment:
+      OLLAMA_HOST: "http://ollama-gpu:${OLLAMA_PORT:-11434}"
+    entrypoint: ["/bin/sh", "-c"]
+    command: >
+      "ollama pull ${OLLAMA_MODEL}"
+      
   qdrant:
     image: qdrant/qdrant:latest
     restart: always

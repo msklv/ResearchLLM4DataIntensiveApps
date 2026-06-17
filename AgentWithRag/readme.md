@@ -61,29 +61,8 @@ text-embeddings-router --model-id Qwen/Qwen3-Embedding-0.6B --port 9090 .
 
 Документация Hugging Face прямо описывает Metal-вариант как локальную установку на Apple Silicon, а в Docker MPS/Metal сейчас не поддерживается, поэтому контейнерный вариант на Mac фактически CPU-only.
 
-
-
-
-
-
-
-- Запуск на Ollama:
-
-
-export OLLAMA_TIMEOUT=600s      # Увеличиваем таймаут API до 10 минут
-export OLLAMA_LOAD_TIMEOUT=10m  # Увеличиваем таймаут загрузки модели до 10 минут
-ollama pull mxbai-embed-large
-ollama run gemma3:12b-it-q4_K_M
-ollama serve
-```
-
-## Запуск окружения в Docker
-
-```bash
-docker compose up -d 
-```
-
 ## Проверка работы
 
-- [Qdrant dashboard](http://localhost:6333/dashboard)
-- [Ollama endpoint](http://localhost:11434)
+* [Qdrant dashboard](http://localhost:6333/dashboard)
+* [Ollama endpoint](http://localhost:11434)
+* [TEI endpoint](http://localhost:9090)
