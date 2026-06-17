@@ -6,7 +6,7 @@
 * Docker и Docker Compose
 * Jupyter Lab и Jupyter Notebook
 * VS Code
-* Ollama или LM Studio
+* Ollama и Text Embeddings Inference (TEI)
 
 ## Краткое описание элементов
 
@@ -36,12 +36,12 @@
 
 Для преобразования текстов в векторные представления:
 
-* `Qwen/Qwen3-Embedding-0.6B` (default, requires 25GB RAM/vRAM to load)
+* `Qwen/Qwen3-Embedding-0.6B` (requires 25GB RAM/vRAM to load)
 * `BAAI/bge-m3` (requires 21GB RAM/vRAM to load)
 
 ## Локальный инференс
 
-Запуск окруждения
+Запуск окружения
 
 ```bash
 #GPU:  
