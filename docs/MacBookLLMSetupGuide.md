@@ -225,7 +225,7 @@ brew install --cask visual-studio-code
 
 **Python и Jupyter:**
 - **Python** (ms-python.python) — базовая поддержка Python, линтинг, дебаг.
-- **Jupyter** (ms-toolsai.jupyter) — запуск `.ipynb` файлов прямо в редакторе .
+- **Jupyter** (ms-toolsai.jupyter) — запуск `.ipynb` файлов прямо в редакторе.
 - **Pylance** (ms-python.vscode-pylance) — быстрый LSP для Python с типизацией.
 - **Ruff** (charliermarsh.ruff) — быстрый линтер и форматтер (от Astral, создателей UV).
 
@@ -314,7 +314,7 @@ response = client.chat.completions.create(
     ]
 )
 
-print(response.choices.message.content)
+print(response.choices[0].message.content)
 ```
 
 ### Пример: подключение к LM Studio
@@ -334,7 +334,7 @@ response = client.chat.completions.create(
     ]
 )
 
-print(response.choices.message.content)
+print(response.choices[0].message.content)
 ```
 
 ### Запуск JupyterLab (вне VS Code)

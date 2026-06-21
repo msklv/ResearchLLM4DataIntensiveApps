@@ -18,7 +18,7 @@
 
 ### Бенчмарки сравнения LLM для русского языка
 
-* Рейтинг на HF https://huggingface.co/models?language=ru&other=text-embeddings-inference&sort=trending
+* Рейтинг на HF <https://huggingface.co/models?language=ru&other=text-embeddings-inference&sort=trending>
 * <https://mera.a-ai.ru/ru/text>
 * <https://huggingface.co/spaces/mteb/leaderboard>
 

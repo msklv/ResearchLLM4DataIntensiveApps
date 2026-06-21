@@ -8,13 +8,13 @@
 
 ## Модели
 
-- [**Qwen2.5‑Coder‑7B**](https://huggingface.co/Qwen/Qwen2.5-Coder-7B-Instruct) или [**Qwen2.5‑Coder‑14B**](https://huggingface.co/Qwen/Qwen2.5-Coder-14B-Instruct) для быстрого локального использования, можно исполтзовать и боле большие модели этого дже семейства.
+- [**Qwen2.5‑Coder‑7B**](https://huggingface.co/Qwen/Qwen2.5-Coder-7B-Instruct) или [**Qwen2.5‑Coder‑14B**](https://huggingface.co/Qwen/Qwen2.5-Coder-14B-Instruct) для быстрого локального использования, можно использовать и более большие модели этого же семейства.
 - **Qwen3-Coder** несколько хуже подходит именно для автопродления кода
 - **glm-4.7-flash** тоже можно
 
 ## Локальный инференс
 
-Установите по официальной инструкциzv [**Ollama**](https://ollama.com/) или [**LM Studio**](https://lmstudio.ai).
+Установите по официальной инструкции [**Ollama**](https://ollama.com/) или [**LM Studio**](https://lmstudio.ai).
 
 
 ## Плагины
